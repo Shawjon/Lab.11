@@ -25,21 +25,45 @@ namespace Lab._11
 
             List<Movie> movieList = new List<Movie> {JamesBond,HarryPotter,WaynesWorld,LOTR,StarWars,Departed,SuperTroopers,GodFather,Moana,ToyStory };
 
-            getMainMenu(movieList);
-            Console.WriteLine(JamesBond.ReturnTitle(JamesBond));
-            Console.WriteLine(movieList[1].ReturnTitle(movieList[1]));
-            Console.WriteLine(movieList[1].ReturnCategory(movieList[1]));
 
-            printList(movieList);
-            
-            searchCategory(movieList,"What Category are you looking for?");
+            int x;
+            bool yesNo = true;
+            while (yesNo == true)
+            {
 
+                try
+                {
+                    getMainMenu(movieList);
+                    x = Convert.ToInt32(Console.ReadLine());
+                    if (x == 1)
+                    {
+                        Console.Clear();
+                        printList(movieList);
+                        Console.ReadKey();
+                        continue;
+                    }
+                    else if (x == 2)
+                    {
+                        searchCategory(movieList,"What Category are you looking for?");
+                        continue;
+                    }
+                    else if (x == 3)
+                    {
+                        Console.WriteLine("Have a good day!");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("That is not a valid option, try again");
+                        continue;
+                    }
 
-
-
-
-
-
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("That is not a valid input");
+                }
+            }
 
         }
         static void getMainMenu(List<Movie> list)
@@ -49,8 +73,11 @@ namespace Lab._11
             Console.WriteLine("Welcome to the Movie List Application!");
             Console.WriteLine();
             Console.WriteLine();
-            
             Console.WriteLine($"There are {list.Count} Movies in this list.");
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("1. Print list. ");
+            Console.WriteLine("2. Search for Movie(s).");
+            Console.WriteLine("3. Exit.");
         }
         static void printList(List<Movie> list)
 
@@ -64,27 +91,39 @@ namespace Lab._11
                  Console.WriteLine("  {0,-20} {1,-1}     {2,-8}",  list[i].ReturnTitle(list[i]),"|", list[i].ReturnCategory(list[i])  );
             }
         }
-        
-  
         public static void searchCategory(List<Movie> list, string message)
         {
             bool found = false;
+            int count = 0;
             while (found != true)
             {
                 Console.WriteLine(message);
                 string choice = Console.ReadLine();
                 for (int i = 0; i < list.Count; i++)
-                {    
-                    if (choice.ToLower() == (list[i].ReturnCategory(list[i])).ToLower())
+                {
+                    for (int j = 0; j < list.Count; j++)
                     {
-                        Console.WriteLine("Match");
-                        Console.WriteLine(list[i].ReturnTitle(list[i]));
-                        break;
+                       
+                        if (choice.ToLower() == (list[i].ReturnCategory(list[i])).ToLower())
+                        {
+                            Console.WriteLine(list[i].ReturnTitle(list[i]));
+                            Console.ReadKey();
+                            count++;
+                            found = true;
+                            break;
+                            
+                        }
+                        else
+                        {
+                            if (count<0)
+                            {
+                                found = true;
+                            }
+                            message = "We could not find that one. Please try a different word: ";
+                        }
+                        
                     }
-                    else
-                    {
-                        message = "We could not find that one. PLease try a different word: ";
-                    }
+                    
                 }
             }
             
